@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use these results or the derived pairs, please cite this repository and the data sources listed in the README."
+title: "Verifying global weather models at Chinese stations (aiwp-china-verification)"
+type: software
+authors:
+  - alias: JooooDev
+    website: "https://github.com/JoooDev-TPP"
+repository-code: "https://github.com/JoooDev-TPP/aiwp-china-verification"
+license: MIT
+version: 0.1.0
+# date-released: YYYY-MM-DD   # TODO: set when v0.1.0 is tagged
+# doi: 10.5281/zenodo.XXXXXXX # TODO: after Zenodo archives the release
+keywords:
+  - forecast verification
+  - numerical weather prediction
+  - AI weather models
+  - China
+references:
+  - type: data
+    title: "Open-Meteo previous-runs archive and satellite radiation archive"
+    authors:
+      - name: Open-Meteo
+    url: "https://open-meteo.com/"
+    license: CC-BY-4.0
+  - type: data
+    title: "ASOS / METAR archive"
+    authors:
+      - name: "Iowa Environmental Mesonet, Iowa State University"
+    url: "https://mesonet.agron.iastate.edu/request/download.phtml"
