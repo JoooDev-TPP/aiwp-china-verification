@@ -50,6 +50,22 @@ SETS = {
     },
 }
 
+# Pages regenerated after they were first published, and why.  A page is rebuilt
+# from whatever data/ holds, so when the inputs for an already-published month are
+# revised the page is rebuilt in place and says so at the top; the first version
+# stays in the commit history.  The method is not changed by a revision - a method
+# change is a correction and goes in the README's correction box.
+REVISIONS = {
+    "2026-08": (
+        "> **2026-10-25 按修订后的数据重出。** 本页此前版本（2026-09-23）的辐照部分用的是 2026-09-21 取到的卫星反演："
+        "当时存档从 2026-05-21 起才有数，7 月 3、4 日每个点位有 23 个小时值。2026-10-03 的月度任务从源头重取了全部配对，"
+        "存档已经补齐 5 月 1 日至 21 日，而 7 月 3、4 日的小时值少了（以达拉特为例只剩 19 和 15 个），按不足 22 小时整天不计的规则剔除。"
+        "其余日子的预报和观测逐行相同，风速部分没有变化，评分方法也没有改。重算后提前 1 天第一名仍是 ECMWF AIFS（957 → 973 Wh/m²），"
+        "第二名由 ECMWF IFS 换成 Météo-France ARPEGE，ECMWF IFS 由 967 变为 1,048、落到第三："
+        "补进来的 5 月 1 日至 21 日里 IFS 的均方根误差是 1,313，其余日子是 973。此前版本的数字在提交历史里。"
+    ),
+}
+
 # A model has to cover most of the window to be ranked on the common sample;
 # one that ran on a quarter of the days would shrink everyone's sample to its own.
 MIN_COVERAGE = 0.80
@@ -288,6 +304,8 @@ def main() -> None:
             "要注意的三点：机场离风电场有几十到几百公里，10 米也不是轮毂高度，这里量的是各模式在这些省份的近地面风速，不是风电场的风；"
             "辐照的“实测”是卫星反演，本身有几个百分点的误差，各模式对的是同一份反演，名次不受影响，绝对误差偏大；"
             "光伏点位是在光伏基地所在县里取的整数坐标点，不是任何一个电站的位置。", ""]
+    if tag in REVISIONS:
+        head[2:2] = [REVISIONS[tag], ""]
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / f"{tag}.md").write_text("\n".join(head + body) + "\n", encoding="utf-8")
     (out_dir / f"{tag}.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1, default=str), encoding="utf-8")

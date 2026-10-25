@@ -15,7 +15,7 @@ On the energy-province sets, one day ahead:
 | | Persistence | Best model | Skill | Observed mean |
 |---|---|---|---|---|
 | 10 m wind, 12 airports | 1.28 m/s | NOAA GFS **0.89** | **0.52** | 3.06 m/s |
-| Daily irradiation, 10 PV points | 2,376 Wh/m² | ECMWF IFS **978** | **0.83** | 6,571 Wh/m² |
+| Daily irradiation, 10 PV points | 2,400 Wh/m² | ECMWF AIFS **989** | **0.83** | 6,642 Wh/m² |
 
 Skill is `1 − MSE/MSE_persistence`: 0 is no better than doing nothing, 1 is
 perfect. Forecasting halves the squared error on wind and removes five sixths of
@@ -23,7 +23,7 @@ it on irradiation — and **NOAA GFS five days out (1.12 m/s) is still closer th
 yesterday's wind (1.28)**.
 
 The more useful half of that table is how the two sides age. From day 1 to day 5
-the models lose 15 to 75 per cent, persistence only 19 to 21: it is already near
+the models lose 15 to 75 per cent, persistence only 18 to 21: it is already near
 the day-to-day variability of the place and has nowhere further to fall. That is
 why the skill number should be read at day 1 and distrusted at day 5, where an
 easy baseline flatters everyone.
@@ -402,16 +402,28 @@ all, and the argument for choosing per region rests on the aggregate reversal
 instead: CMA GRAPES leads at the nine national airports and is third here, while
 GFS leads here.
 
-**Irradiation, late May to August 2026, 857 station-days.** ECMWF AIFS (957
-Wh/m²) and ECMWF IFS (967) are level at day 1, with Météo-France ARPEGE third and
-CMA GRAPES last. The rolling offset separates them: AIFS carries a −446 Wh/m²
-bias and falls to 858 once it is removed, while IFS, which carries almost none
-(−34), rises to 983 — correcting a model that has nothing to correct only adds
-the noise of estimating the offset. AIFS also grows slowest with lead, +50% from
-day 1 to day 5 against +73 to +75% for IFS and ICON, which is what the 2025 window
-showed at the anonymised sites. Four of the ten points go to AIFS and four to
-ARPEGE, one each to IFS and ICON; one of those ten leads stands on its own and
-none survives the correction across the ten.
+> **Revised on 2026-10-25 (data, not method).** The satellite archive has
+> revised its record since this paragraph was first written: it now reaches back
+> to 1 May 2026 instead of 21 May, and 3 and 4 July now fall below the 22-hour
+> rule for a usable day (Dalad has 19 and 15 hourly values). Every other pair is
+> unchanged, the wind numbers are unchanged, and the scoring is unchanged. The
+> 2026-08 page and this paragraph were rebuilt from the revised pairs. ECMWF IFS,
+> level first at 967 Wh/m² on the earlier data, is third at 1,048: over the three
+> added weeks its day-1 error is 1,313 against 973 on the rest. Earlier wording is
+> in the commit history.
+
+**Irradiation, May to August 2026, 1,047 station-days.** ECMWF AIFS (973
+Wh/m²) is first at day 1 and level with Météo-France ARPEGE (1,006); ECMWF IFS is
+third (1,048) and CMA GRAPES last. The rolling offset reorders the field: AIFS
+carries a −492 Wh/m² bias and falls to 843 once it is removed, ahead of ICON
+(979) and ARPEGE (980), while ECCC GEM, which carries almost none (−93), rises
+from 1,162 to 1,173 — correcting a model that has nothing to correct only adds
+the noise of estimating the offset. AIFS also grows slowest with lead, +48% from
+day 1 to day 5 against +62% for IFS and +75% for ICON, which is what the 2025
+window showed at the anonymised sites. Four of the ten points go to ARPEGE, three
+to AIFS, one each to GFS, ICON and IFS; four of those ten leads stand on their
+own and two survive the correction across the ten — ARPEGE at Hami and
+Zhongwei.
 
 Building this set found three things wrong with the inputs rather than the models.
 
@@ -421,8 +433,8 @@ Building this set found three things wrong with the inputs rather than the model
   eighteen months and Ordos and Nantong none with a wind speed. Each candidate was
   checked for a full month of hourly wind before it was used.
 - **The satellite archive has moved.** In mid-September 2025-dated irradiance
-  could be fetched for these longitudes; now the same product starts in May 2026.
-  The irradiation window is therefore about a hundred days, and the 2025 pairs
+  could be fetched for these longitudes; now the same product starts on 1 May 2026.
+  The irradiation window is therefore about four months, and the 2025 pairs
   committed here can no longer be rebuilt from source.
 - **The forecast archive serves a different quantity at some leads.** GEM's
   irradiance beyond day 3 runs 30% above its own day-1 forecasts for the same

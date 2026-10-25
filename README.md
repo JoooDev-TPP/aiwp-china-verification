@@ -51,7 +51,7 @@ ahead ([leaderboard 2026-08](reports/leaderboard/2026-08.md)):
 | | Persistence | Best model | Skill | Observed mean |
 |---|---|---|---|---|
 | 10 m wind, 12 airports | 1.28 m/s | NOAA GFS **0.89** | **0.52** | 3.06 m/s |
-| Daily irradiation, 10 PV points | 2,376 Wh/m² | ECMWF IFS **978** | **0.83** | 6,571 Wh/m² |
+| Daily irradiation, 10 PV points | 2,400 Wh/m² | ECMWF AIFS **989** | **0.83** | 6,642 Wh/m² |
 
 Skill is `1 − MSE/MSE_persistence`. Forecasting halves the squared error on wind
 and removes five sixths of it on irradiation — and NOAA GFS five days out
@@ -109,6 +109,14 @@ Full scorecards, figures and discussion:
 > of them do not survive it. The sentence "nobody running plants in several
 > provinces can buy one model" rested on the uncorrected count and has been
 > rewritten. Earlier wording is in the commit history.
+
+> **Revised on 2026-10-25 (data, not method).** The irradiation half of the
+> 2026-08 leaderboard was rebuilt after the satellite archive revised its own
+> record: it now starts on 1 May 2026 rather than 21 May, and 3 and 4 July have
+> fallen below the 22-hour rule for a usable day. On every other day the pairs
+> are identical, the wind half did not change, and no scoring rule changed. The
+> day-1 irradiation leader in the table above moved from ECMWF IFS (978) to ECMWF
+> AIFS (989). Earlier figures are in the commit history.
 
 ## Why fixed lead is the whole study
 
