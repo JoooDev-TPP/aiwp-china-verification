@@ -33,3 +33,23 @@ def test_a_model_that_is_merely_wrong_is_not_flagged():
 
 def test_short_records_are_not_judged():
     assert verify.lead_consistency(_pairs({1: 1.0, 5: 1.5}, days=10)) == []
+
+
+def test_a_page_ends_at_the_end_of_its_month():
+    from aiwp import leaderboard
+
+    assert leaderboard.month_end("2026-08") == pd.Timestamp("2026-08-31")
+    assert leaderboard.month_end("2028-02") == pd.Timestamp("2028-02-29")
+
+
+def test_regenerating_an_old_page_does_not_use_later_data():
+    # data/ grows every month; an old page rebuilt from it must not see the months
+    # that came after it, or it can never be reproduced once a new month is added
+    from aiwp import leaderboard
+
+    spec = leaderboard.SETS["wind_speed_10m"]
+    pairs = pd.read_parquet(spec["pairs"], columns=["date"])
+    if pd.to_datetime(pairs["date"]).max() <= pd.Timestamp("2026-08-31"):
+        return
+    _, summary = leaderboard.section("wind_speed_10m", spec, leaderboard.month_end("2026-08"))
+    assert summary["window"][1] == "2026-08-31"

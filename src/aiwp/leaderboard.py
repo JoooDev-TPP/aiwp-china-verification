@@ -110,9 +110,19 @@ def fmt(value: float, digits: int) -> str:
     return f"{value:,.{digits}f}"
 
 
-def section(variable: str, spec: dict) -> tuple[list[str], dict]:
+def month_end(tag: str) -> pd.Timestamp:
+    """The last day a page named ``YYYY-MM`` may use."""
+    return pd.Period(tag, freq="M").end_time.normalize()
+
+
+def section(variable: str, spec: dict, end: pd.Timestamp | None = None) -> tuple[list[str], dict]:
     pairs = pd.read_parquet(spec["pairs"])
     pairs["date"] = pd.to_datetime(pairs["date"])
+    # A page is the record up to the end of its month.  data/ keeps growing, so
+    # without this cut, regenerating an old page silently scores it on months
+    # that had not happened when it was written.
+    if end is not None:
+        pairs = pairs[pairs["date"] <= end]
     inconsistent = verify.lead_consistency(pairs)
     for item in inconsistent:
         pairs = pairs[~((pairs["model"] == item["model"]) & (pairs["lead_days"] == item["lead_days"]))]
@@ -254,19 +264,21 @@ def section(variable: str, spec: dict) -> tuple[list[str], dict]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--tag", default=None, help="page name, default the last month in the data")
+    parser.add_argument("--tag", default=None, help="page name YYYY-MM, default the last month in the data; "
+                             "data after the end of that month are not used")
     parser.add_argument("--out", default=None,
                         help="write somewhere else than reports/leaderboard; used by the "
                              "reproducibility check, which must not touch the committed pages")
     args = parser.parse_args()
     out_dir = Path(args.out) if args.out else OUT
 
+    end = month_end(args.tag) if args.tag else None
     body, summary = [], {}
     for variable, spec in SETS.items():
         if not spec["pairs"].exists():
             body += [f"## {spec['title']}", "", "这一期没有数据。", ""]
             continue
-        lines, summary[variable] = section(variable, spec)
+        lines, summary[variable] = section(variable, spec, end)
         body += lines
 
     tag = args.tag or max(s["window"][1] for s in summary.values())[:7]
