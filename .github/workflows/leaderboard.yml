@@ -41,6 +41,12 @@ jobs:
 
       - run: python -m pytest tests -q
 
+      # 取数会从源头重取全部配对，存档若改了已发布月份的数据，旧的那几页就对不上了。
+      # 这个提交用 GITHUB_TOKEN 推送，不会触发 tests 工作流，所以要在这里查：
+      # 对不上就失败、开 issue，由人判断是重出旧页（附日期说明）还是别的处理。
+      - name: 已发布的各页能不能从新数据里原样重算出来
+        run: python scripts/check_reproducible.py
+
       - name: 提交
         run: |
           set -euo pipefail
