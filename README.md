@@ -600,5 +600,5 @@ reports/               scorecards, results.json, figures
 
 ## Related repositories
 
-- [cn-weather-cube](https://github.com/Zhaohh0706/cn-weather-cube) — point weather with units attached and sources named
-- [green-ai-ledger](https://github.com/Zhaohh0706/green-ai-ledger) — compute energy and carbon, with the grid factor pinned rather than guessed
+- [cn-weather-cube](https://github.com/JoooDev-TPP/cn-weather-cube) — point weather with units attached and sources named
+- [green-ai-ledger](https://github.com/JoooDev-TPP/green-ai-ledger) — compute energy and carbon, with the grid factor pinned rather than guessed

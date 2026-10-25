@@ -45,7 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           git config user.name "Haohang Zhao"
-          git config user.email "70002628+Zhaohh0706@users.noreply.github.com"
+          git config user.email "70002628+JoooDev-TPP@users.noreply.github.com"
           git add data reports
           if git diff --cached --quiet; then
             echo "没有变化，不提交"
